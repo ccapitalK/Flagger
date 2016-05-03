@@ -6,12 +6,14 @@
 #include<string.h>
 #include<stdlib.h>
 #include<assert.h>
+#include<getopt.h>
 #include"main.h"
 
 int WIDTH=680;
 int HEIGHT=480;
-void buildBitmap(char * file_name, int flag_no);
+void buildBitmap(char * file_name, void (*drawFunc)(unsigned char *));
 void printFlagList();
+void (*getDrawFunc(char * flag_code))(unsigned char *);
 
 typedef struct {
     const char * name;
@@ -23,19 +25,38 @@ flag_entry FLAG_TABLE[] = {
     { "US", "American Flag", &drawAmericanFlag },
     { "DN", "Danish Flag",   &drawDanishFlag   },
     { "JP", "Japanese Flag", &drawJapaneseFlag },
+    { "CH", "Chinese Flag",  &drawChineseFlag },
 };
 
 int main(int argc, char * argv[]) {
-    char * file_name="./flag.bmp";
     if(argc<2){
-        printf("Usage: [flagger] flagname [--help] [-o Output.bmp]\n");
+        printf("Usage: [flagger] flagname [-h] [-o Output_Name.bmp]\n");
         exit(EXIT_FAILURE);
     }
-    if(strcmp(argv[1],"--help")==0){
-        printFlagList();
-        exit(EXIT_SUCCESS);
+    struct option long_options[] = {
+        {"help", no_argument, 0, 'h'},
+        {"output", required_argument, 0, 'o'},
+        {0, 0, 0, 0}
+    };
+    char * file_name="./Flag.bmp";
+    int c;
+    int done=0;
+    while(!done){
+        int option_index;
+        c = getopt_long(argc, argv, "ho:", long_options, &option_index);
+        switch(c){
+            case -1:
+                done=1;
+                break;
+            case 'o':
+                file_name=optarg;
+                break;
+            case 'h':
+                printFlagList();
+                exit(EXIT_SUCCESS);
+        }
     }
-    buildBitmap(file_name, 0);
+    buildBitmap(file_name, getDrawFunc(argv[optind]));
     return EXIT_SUCCESS;
 }
 
@@ -46,7 +67,17 @@ void printFlagList(){
     }
 }
 
-void buildBitmap(char * file_name, int flag_no){
+void (*getDrawFunc(char * flag_code))(unsigned char *){
+    for(unsigned int i = 0; i < sizeof(FLAG_TABLE)/sizeof(flag_entry); ++i){
+        if(strcmp(flag_code,FLAG_TABLE[i].name)==0){
+            return FLAG_TABLE[i].func;
+        }
+    }
+    printf("Unknown flag code\n");
+    exit(EXIT_FAILURE);
+}
+
+void buildBitmap(char * file_name, void (*drawFunc)(unsigned char *)){
     unsigned char bmpHeader[BMPHEADERSIZE];
     unsigned char DIBHeader[DIBHEADERSIZE];
     unsigned char screen[WIDTH*HEIGHT*3];
@@ -67,17 +98,7 @@ void buildBitmap(char * file_name, int flag_no){
 
     makeBMPHeader(bmpHeader);
     makeDIBHeader(DIBHeader);
-    switch(flag_no) {
-        case 0:
-            drawDanishFlag(screen);
-            break;
-        case 1:
-            drawJapaneseFlag(screen);
-            break;
-        case 2:
-            drawAmericanFlag(screen);
-            break;
-    }
+    drawFunc(screen);
 
     writeBMPHeader(targetFile,bmpHeader);
     writeDIBHeader(targetFile,DIBHeader);

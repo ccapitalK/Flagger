@@ -55,17 +55,17 @@ double starLineTest(double x, double y, double theta, double scale, int n, doubl
     return ret;
 }
 
-void drawStarN(unsigned char * dest, int n, double x0, 
+void drawStarN(unsigned char * dest, int n, double rot, double x0, 
     double y0, double scale, char R, char G, char B, double smoothv){
     //drawCircle(dest,x0,y0,scale,R,G,B,smoothv);
-    double theta=M_PI;
+    double theta=M_PI+rot;
     double x, y;
     for(int i = MAX(y0-scale*1.1f,0); i < MIN(y0+scale*1.1f,HEIGHT); ++i){
         for(int j = MAX(x0-scale*1.1f,0); j < MIN(x0+scale*1.1f,WIDTH); ++j){
             x=j-x0;
             y=i-y0;
             double alpha=1.0f;
-            theta=M_PI;
+            theta=M_PI+rot;
             int test_counter=0;
             double buf=0.0f;
             for(int i = 0; i < n; ++i,theta+=(2.0f*M_PI/n)){
