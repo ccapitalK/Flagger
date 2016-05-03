@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-lm -O2
+CFLAGS=-lm -O2 -Wall -Wextra
 
 main: main.c main.h draw.c flag.c
-	gcc ${CFLAGS} *.c -o main
+	gcc ${CFLAGS} *.c -o flagger

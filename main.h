@@ -15,6 +15,10 @@ void writePixelArray(FILE* dest, unsigned char * data);
 //fill arrays with relevant values
 void makeBMPHeader(unsigned char * header);
 void makeDIBHeader(unsigned char * header);
+//draw the danish flag using the putPixel() function
+void drawDanishFlag(unsigned char * dest);
+void drawJapaneseFlag(unsigned char * dest);
+void drawAmericanFlag(unsigned char * dest);
 //place a pixel onto the screen array at (x,y)
 void putPixel(unsigned char * dest, int x, int y, unsigned char R,
               unsigned char G, unsigned char B);

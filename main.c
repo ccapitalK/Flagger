@@ -10,13 +10,43 @@
 
 int WIDTH=680;
 int HEIGHT=480;
-//draw the danish flag using the putPixel() function
-void drawDanishFlag(unsigned char * dest);
-void drawJapaneseFlag(unsigned char * dest);
-void drawAmericanFlag(unsigned char * dest);
+void buildBitmap(char * file_name, int flag_no);
+void printFlagList();
+
+typedef struct {
+    const char * name;
+    const char * description;
+    void (*func)(unsigned char * dest);
+} flag_entry;
+
+flag_entry FLAG_TABLE[] = {
+    { "US", "American Flag", &drawAmericanFlag },
+    { "DN", "Danish Flag",   &drawDanishFlag   },
+    { "JP", "Japanese Flag", &drawJapaneseFlag },
+};
 
 int main(int argc, char * argv[]) {
-    FILE * targetFile = NULL;
+    char * file_name="./flag.bmp";
+    if(argc<2){
+        printf("Usage: [flagger] flagname [--help] [-o Output.bmp]\n");
+        exit(EXIT_FAILURE);
+    }
+    if(strcmp(argv[1],"--help")==0){
+        printFlagList();
+        exit(EXIT_SUCCESS);
+    }
+    buildBitmap(file_name, 0);
+    return EXIT_SUCCESS;
+}
+
+void printFlagList(){
+    printf("\nFlag Codes:\n    [Code]:   [Description]\n");
+    for(unsigned int i = 0; i < sizeof(FLAG_TABLE)/sizeof(flag_entry); ++i){
+        printf("    %-6s:   %s\n", FLAG_TABLE[i].name, FLAG_TABLE[i].description);
+    }
+}
+
+void buildBitmap(char * file_name, int flag_no){
     unsigned char bmpHeader[BMPHEADERSIZE];
     unsigned char DIBHeader[DIBHEADERSIZE];
     unsigned char screen[WIDTH*HEIGHT*3];
@@ -29,19 +59,30 @@ int main(int argc, char * argv[]) {
         }
         screen[i]=0xff;
     }
-    targetFile=fopen("./Flag.bmp","w");
+    FILE * targetFile = fopen(file_name,"w");
+    if(targetFile==NULL){
+        perror("Could not open file for writing");
+        exit(EXIT_FAILURE);
+    }
 
     makeBMPHeader(bmpHeader);
     makeDIBHeader(DIBHeader);
-    //drawDanishFlag(screen);
-    //drawJapaneseFlag(screen);
-    drawAmericanFlag(screen);
+    switch(flag_no) {
+        case 0:
+            drawDanishFlag(screen);
+            break;
+        case 1:
+            drawJapaneseFlag(screen);
+            break;
+        case 2:
+            drawAmericanFlag(screen);
+            break;
+    }
 
     writeBMPHeader(targetFile,bmpHeader);
     writeDIBHeader(targetFile,DIBHeader);
     writePixelArray(targetFile,screen);
     fclose(targetFile);
-    return EXIT_SUCCESS;
 }
 
 void writeDIBHeader(FILE* dest,  unsigned char * header){
