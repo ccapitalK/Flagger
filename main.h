@@ -7,6 +7,16 @@
 #define MAX(a,b) (a>b ? a : b) //return the larger value of parameters
 #define CLAMP(a,c,b) MIN(b,MAX(a,c))
 //CLAMP returns c if a<=c<=b, a if c<a, or b if b<c
+//vector definitions
+typedef struct {
+    double x;
+    double y;
+} vec2d;
+double dotProduct(vec2d a, vec2d b);
+vec2d normalize(vec2d);
+double modulus(vec2d);
+vec2d projn(vec2d vec, vec2d base);
+
 
 //write values in arrays to file
 void writeBMPHeader(FILE* dest,  unsigned char * header);
@@ -20,6 +30,7 @@ void drawDanishFlag(unsigned char * dest);
 void drawJapaneseFlag(unsigned char * dest);
 void drawChineseFlag(unsigned char * dest);
 void drawAmericanFlag(unsigned char * dest);
+void drawUKFlag(unsigned char * dest);
 //place a pixel onto the screen array at (x,y)
 void putPixel(unsigned char * dest, int x, int y, unsigned char R,
               unsigned char G, unsigned char B);
@@ -33,6 +44,8 @@ void drawStarN(unsigned char * dest, int n, double rot, double x0,
     double y0, double scale, char R, char G, char B, double smoothv);
 void drawRect(unsigned char * dest, double x0, 
     double y0, double x1, double y1, char R, char G, char B);
+void drawLine(unsigned char * dest, double thickness, double x0, double y0,
+        double x1, double y1, char R, char G, char B, double smoothv);
 
 extern int WIDTH;
 extern int HEIGHT;

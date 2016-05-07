@@ -3,9 +3,9 @@
 
 void drawDanishFlag(unsigned char * dest){
     for(int i = 0; i < HEIGHT; ++i){
-        if(i<200||i>280){
+            if(i<5*HEIGHT/12||i>7*HEIGHT/12){
             for(int j = 0; j < WIDTH; ++j){
-                if(j<200||j>280){
+                if(j<5*WIDTH/17||j>7*WIDTH/17){
                     putPixel(dest,j,i,0xff,0,0);
                 }
             }
@@ -40,4 +40,20 @@ void drawAmericanFlag(unsigned char * dest){
             drawStarN(dest,5,0.0f,WIDTH/25+j*WIDTH/13+(i&1)*WIDTH/26,25*HEIGHT/26-i*HEIGHT/18,10.0f,255,255,255,4.9f);
         }
     }
+}
+
+void drawUKFlag(unsigned char * dest){
+    drawRect(dest,0,0,WIDTH,HEIGHT,0,0,127);
+
+    drawLine(dest,40,0,0,WIDTH,HEIGHT,255,255,255,2);
+    drawLine(dest,40,0,HEIGHT,WIDTH,0,255,255,255,2);
+    drawLine(dest,13,0,-3*HEIGHT/80,WIDTH/2,37*HEIGHT/80,255,0,0,2);
+    drawLine(dest,13,WIDTH/2,43*HEIGHT/80,WIDTH,83*HEIGHT/80,255,0,0,2);
+    drawLine(dest,13,0,77*HEIGHT/80,WIDTH/2,37*HEIGHT/80,255,0,0,2);
+    drawLine(dest,13,WIDTH/2,43*HEIGHT/80,WIDTH,3*HEIGHT/80,255,0,0,2);
+
+    drawRect(dest,6*WIDTH/14,0,8*WIDTH/14,HEIGHT,255,255,255);
+    drawRect(dest,0,6*HEIGHT/14,WIDTH,8*HEIGHT/14,255,255,255);
+    drawRect(dest,6*WIDTH/13,0,7*WIDTH/13,HEIGHT,255,0,0);
+    drawRect(dest,0,6*HEIGHT/13,WIDTH,7*HEIGHT/13,255,0,0);
 }

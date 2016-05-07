@@ -10,7 +10,7 @@
 #include"main.h"
 
 int WIDTH=680;
-int HEIGHT=480;
+int HEIGHT=400;
 void buildBitmap(char * file_name, void (*drawFunc)(unsigned char *));
 void printFlagList();
 void (*getDrawFunc(char * flag_code))(unsigned char *);
@@ -22,10 +22,11 @@ typedef struct {
 } flag_entry;
 
 flag_entry FLAG_TABLE[] = {
-    { "US", "American Flag", &drawAmericanFlag },
-    { "DN", "Danish Flag",   &drawDanishFlag   },
-    { "JP", "Japanese Flag", &drawJapaneseFlag },
-    { "CH", "Chinese Flag",  &drawChineseFlag },
+    { "US", "American Flag",   &drawAmericanFlag },
+    { "DN", "Danish Flag",     &drawDanishFlag   },
+    { "JP", "Japanese Flag",   &drawJapaneseFlag },
+    { "CH", "Chinese Flag",    &drawChineseFlag  },
+    { "UK", "United Kingdom",  &drawUKFlag       },
 };
 
 int main(int argc, char * argv[]) {
