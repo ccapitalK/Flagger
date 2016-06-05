@@ -49,8 +49,8 @@ void drawUKFlag(unsigned char * dest){
     drawLine(dest,40,0,HEIGHT,WIDTH,0,255,255,255,2);
     drawLine(dest,13,0,-3*HEIGHT/80,WIDTH/2,37*HEIGHT/80,255,0,0,2);
     drawLine(dest,13,WIDTH/2,43*HEIGHT/80,WIDTH,83*HEIGHT/80,255,0,0,2);
-    drawLine(dest,13,0,77*HEIGHT/80,WIDTH/2,37*HEIGHT/80,255,0,0,2);
-    drawLine(dest,13,WIDTH/2,43*HEIGHT/80,WIDTH,3*HEIGHT/80,255,0,0,2);
+    drawLine(dest,13,-3*WIDTH/80,HEIGHT,WIDTH/2,37*HEIGHT/80,255,0,0,2);
+    drawLine(dest,13,WIDTH/2,43*HEIGHT/80,83*WIDTH/80,0,255,0,0,2);
 
     drawRect(dest,6*WIDTH/14,0,8*WIDTH/14,HEIGHT,255,255,255);
     drawRect(dest,0,6*HEIGHT/14,WIDTH,8*HEIGHT/14,255,255,255);
